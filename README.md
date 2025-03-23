@@ -226,8 +226,8 @@ The **Good** approach uses set automatically removes duplicates in a more effici
 | Real-time Communication | `Django Channels`, `Flask-SocketIO` | `Socket.IO`, `websockets` |
 | Request Handling | `Flask`, `Django` | `FastAPI`, `Bottle` |
 | Security | `ssl`, `hashlib`, `hmac`, `cryptography` | `Flask-Security`, `Django-Defender`, `PyCryptodome` |
-| Task Queues | `Celery` | ` RQ` , ` Huey` , ` Dramatiq`  |
-| Testing | `unittest`, ` pytest` , ` nose2`  | ` tox` , ` pytest-django`  |
+| Task Queues | `Celery` | `RQ` , `Huey` , `Dramatiq`  |
+| Testing | `unittest`, `pytest` , `nose2`  | `tox` , `pytest-django`  |
 
 
 ---
