@@ -11,6 +11,11 @@
 8. [Avoiding Mutable Default Arguments](#avoiding-mutable-default-arguments)
 9. [Use of with for File Handling](#use-of-with-for-file-handling)
 10. [Use of Itertools for Efficiency](#use-of-itertools-for-efficiency)
+11. [Using is vs == Correctly](#using-is-vs--correctly)
+12. [Properly Closing Database Connections](#properly-closing-database-connections)
+13. [Using enumerate() Instead of Manual Indexing](#using-enumerate-instead-of-manual-indexing)
+14. [Using defaultdict Instead of Checking for Keys Manually](#using-defaultdict-instead-of-checking-for-keys-manually)
+15. [Using get() for Dictionary Access](#using-get-for-dictionary-access)
 11. [Best Practices accepted by community](#best-practices-accepted-by-community)
 12. [Python Naming Conventions](#python-naming-conventions)
 13. [Interview Questions](#interview-questions)
@@ -201,7 +206,110 @@ def get_unique_items(lst):
 The **Good** approach uses set automatically removes duplicates in a more efficient way. This is faster and simpler.
 
 --- 
+## Using is vs == Correctly
+### Bad
+```python
+a = 256
+b = 256
+print(a is b)  # True (small integers are cached)
 
+a = 257
+b = 257
+print(a is b)  # False (different objects)
+```
+
+### Good
+```python
+a = 257
+b = 257
+print(a == b)  # True (correct way to compare values)
+```
+The **Bad** approach uses is to compare values, which checks object identity instead of equality. This can lead to unexpected results when comparing integers beyond the caching range or other objects like lists and strings.
+
+---
+## Properly Closing Database Connections
+### Bad
+```python
+import sqlite3
+
+conn = sqlite3.connect('example.db')
+cursor = conn.cursor()
+cursor.execute("SELECT * FROM users")
+data = cursor.fetchall()
+conn.close()  # Can fail if an exception occurs
+```
+
+### Good 
+```python
+import sqlite3
+
+with sqlite3.connect('example.db') as conn:
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM users")
+    data = cursor.fetchall()
+```
+
+Using with ensures that the connection is closed properly even if an exception occurs, making the code more robust.
+
+---
+## Using enumerate() Instead of Manual Indexing
+### Bad 
+```python
+names = ["Alice", "Bob", "Charlie"]
+for i in range(len(names)):
+    print(i, names[i])
+```
+
+### Good 
+```python
+names = ["Alice", "Bob", "Charlie"]
+for i, name in enumerate(names):
+    print(i, name)
+```
+The **Good** approach is more readable and avoids manually handling indices.
+
+---
+## Using defaultdict Instead of Checking for Keys Manually
+### Bad
+```python
+word_count = {}
+words = ["apple", "banana", "apple", "orange"]
+
+for word in words:
+    if word in word_count:
+        word_count[word] += 1
+    else:
+        word_count[word] = 1
+```
+
+### Good 
+```python
+from collections import defaultdict
+
+word_count = defaultdict(int)
+words = ["apple", "banana", "apple", "orange"]
+
+for word in words:
+    word_count[word] += 1
+```
+The **Good** approach eliminates the need to check for key existence manually and provides a default value.
+
+---
+## Using get() for Dictionary Access
+### Bad 
+```python
+config = {"timeout": 30}
+timeout = config["timeout"] if "timeout" in config else 60
+```
+
+### Good 
+```python
+config = {"timeout": 30}
+timeout = config.get("timeout", 60)
+```
+The **Good** approach is cleaner and more idiomatic.
+
+---
 ## Best Practices accepted by community
 | Task | Standard Tools | 3rd Party Tools |
 |---|---|---|
